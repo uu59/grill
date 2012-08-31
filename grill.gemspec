@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["k@uu59.org"]
   gem.description   = %q{Implant Gemfile into your script}
   gem.summary       = %q{Implant Gemfile into your script}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/uu59/grill"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
