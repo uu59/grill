@@ -1,12 +1,9 @@
-require "tempfile"
 require "digest/md5"
 require "fileutils"
 require "grill/version"
 
 module Grill
   class << self
-    attr_reader :gemfile
-
     def home
       home = "#{ENV["GRILL_HOME"] || ENV["HOME"] || "."}/.grill"
       unless File.directory?(home)
