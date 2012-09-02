@@ -10,6 +10,8 @@ Implant Gemfile into your script.
 
     $ gem install grill
 
+If you want to uninstall gems installed by Grill, delete `$HOME/.grill` directory.
+
 ## Usage
 
     #!ruby
@@ -21,8 +23,13 @@ Implant Gemfile into your script.
     Grill.implant <<-GEMFILE
       source :rubygems
       gem "rack"
-      gem "foo", :path => "/path/to/lib"
-      gem "bar", :git => "file:///path/to/repo"
     GEMFILE
 
     p defined?(Rack) # => "constant"
+
+It is completely compatible (you installed version) Bundler's Gemfile so you can use [full spec of it](http://gembundler.com/gemfile.html) for version fixation, `:require`, `:path`, etc.
+
+## When use this?
+
+Grill is useful for your disposable scripts. Do you want to do that create directory and put Gemfile into it and `bundle install; bundle exec foo.rb` for *disposable* scripts?
+
