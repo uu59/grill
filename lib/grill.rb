@@ -17,7 +17,7 @@ module Grill
 
     def implant(gems)
       fullpath = File.expand_path($0)
-      gemfile = "#{home}/#{Digest::MD5.hexdigest(fullpath)}"
+      gemfile = "#{home}/#{Digest::MD5.hexdigest(fullpath)}-#{Digest::MD5.hexdigest(gems)}"
       @gem = gems
       tmp = File.open(gemfile, "w")
       tmp.puts @gem
