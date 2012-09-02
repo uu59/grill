@@ -3,6 +3,18 @@
 require "spec_helper"
 
 describe Grill do
+  before(:all) do
+    ENV["GRILL_HOME"] = File.expand_path("../tmp", __FILE__)
+  end
+
+  after(:each) do
+    FileUtils.rm_rf(ENV["GRILL_HOME"])
+  end
+
+  it "#home" do
+    Grill.home.should == "#{ENV["GRILL_HOME"]}/.grill"
+  end
+
   it "#implant" do
     defined?(Bundler).should be_nil
     defined?(Dummy).should be_nil

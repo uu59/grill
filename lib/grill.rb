@@ -8,7 +8,7 @@ module Grill
     attr_reader :gemfile
 
     def home
-      home = "ENV["HOME"] || "."}/.grill"
+      home = "#{ENV["GRILL_HOME"] || ENV["HOME"] || "."}/.grill"
       unless File.directory?(home)
         FileUtils.mkdir_p(home)
       end
