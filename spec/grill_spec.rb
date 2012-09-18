@@ -15,19 +15,23 @@ describe Grill do
     Grill.home.should == "#{ENV["GRILL_HOME"]}/.grill"
   end
 
-  it "#implant" do
-    defined?(Bundler).should be_nil
-    defined?(Dummy).should be_nil
-    defined?(DummyGit).should be_nil
+  # cannot use `context` because test will be broken
+  # I don't know why but maybe that `context` require Bundler
+  it "#implant by String" do
+    cleanroom do
+      defined?(Bundler).should be_nil
+      defined?(Dummy).should be_nil
+      defined?(DummyGit).should be_nil
 
-    Grill.implant(<<-GEM)
-      gem "bundler"
-      gem "dummy", :path => "#{File.expand_path(".././support", __FILE__)}"
-      gem "dummy_git", :git => "file://#{File.expand_path(".././support/dummy_git", __FILE__)}"
-    GEM
-    defined?(Bundler).should_not be_nil
-    defined?(Dummy).should_not be_nil
-    defined?(DummyGit).should_not be_nil
+      Grill.implant(<<-GEM)
+        gem "bundler"
+        gem "dummy", :path => "#{File.expand_path(".././support", __FILE__)}"
+        gem "dummy_git", :git => "file://#{File.expand_path(".././support/dummy_git", __FILE__)}"
+      GEM
+      defined?(Bundler).should_not be_nil
+      defined?(Dummy).should_not be_nil
+      defined?(DummyGit).should_not be_nil
+    end
   end
 
   it "separete Gemfile different contants" do
