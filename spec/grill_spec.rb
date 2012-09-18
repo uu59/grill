@@ -34,6 +34,24 @@ describe Grill do
     end
   end
 
+  it "#implant by Symbol" do
+    cleanroom do
+      name = :test
+      File.open("#{Grill.home}/#{name}", "w") do |f|
+        f.puts <<-GEM
+          gem "dummy", :path => "#{File.expand_path(".././support", __FILE__)}"
+          gem "dummy2", :path => "#{File.expand_path(".././support", __FILE__)}"
+        GEM
+      end
+      defined?(Dummy).should be_nil
+      defined?(Dummy2).should be_nil
+
+      Grill.implant name
+      defined?(Dummy).should_not be_nil
+      defined?(Dummy2).should_not be_nil
+    end
+  end
+
   it "separete Gemfile different contants" do
     Grill.implant(<<-GEM)
       gem "bundler"

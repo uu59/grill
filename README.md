@@ -27,6 +27,25 @@ If you want to uninstall gems installed by Grill, delete `$HOME/.grill` director
 
     p defined?(Rack) # => "constant"
 
+Or, more handy way to use as below (since v0.2.1):
+
+    $ cat $HOME/.grill/commontools
+    source :rubygems
+    gem "typhoeus"
+    gem "nokogiri"
+    gem "slop"
+
+    $ cat scraper.rb
+    require "grill"
+
+    Grill.implant :commontools
+
+    opts = Slop.parse do
+      # ...
+    end
+
+# Compatibility of Gemfile
+
 It is completely compatible (you installed version) Bundler's Gemfile so you can use [full spec of it](http://gembundler.com/gemfile.html) for version fixation, `:require`, `:path`, etc.
 
 ## When use this?

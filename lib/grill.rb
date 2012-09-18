@@ -12,12 +12,17 @@ module Grill
       home
     end
 
-    def implant(gems)
+    def implant(gems_or_sym)
+      if gems_or_sym.class == Symbol
+        gems = File.read(File.join(home, gems_or_sym.to_s))
+      else
+        gems = gems_or_sym
+      end
+
       fullpath = File.expand_path($0)
       gemfile = "#{home}/#{Digest::MD5.hexdigest(fullpath)}-#{Digest::MD5.hexdigest(gems)}"
-      @gem = gems
       tmp = File.open(gemfile, "w")
-      tmp.puts @gem
+      tmp.puts gems
       tmp.close
       ENV["BUNDLE_GEMFILE"] = tmp.path
 
@@ -26,6 +31,7 @@ module Grill
         system(%Q!bundle install --gemfile "#{gemfile}" --path "#{home}/gems"!)
         puts "gems are installed."
       end
+
       require "bundler/setup"
       Bundler.require
     end
