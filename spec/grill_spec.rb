@@ -52,6 +52,22 @@ describe Grill do
     end
   end
 
+  it "#implant multiple" do
+    cleanroom do
+      defined?(Dummy).should be_nil
+      defined?(Dummy2).should be_nil
+
+      Grill.implant <<-FOO, <<-BAR
+      gem "dummy", :path => "#{File.expand_path(".././support", __FILE__)}"
+      FOO
+      gem "dummy2", :path => "#{File.expand_path(".././support", __FILE__)}"
+      BAR
+
+      defined?(Dummy).should_not be_nil
+      defined?(Dummy2).should_not be_nil
+    end
+  end
+
   it "separete Gemfile different contants" do
     Grill.implant(<<-GEM)
       gem "bundler"

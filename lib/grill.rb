@@ -12,11 +12,15 @@ module Grill
       home
     end
 
-    def implant(gems_or_sym)
-      if gems_or_sym.class == Symbol
-        gems = File.read(File.join(home, gems_or_sym.to_s))
-      else
-        gems = gems_or_sym
+    def implant(*args)
+      gems = ""
+      args.each do |arg|
+        if arg.class == Symbol
+          gems << File.read(File.join(home, arg.to_s))
+        else
+          gems << arg
+        end
+        gems << "\n"
       end
 
       fullpath = File.expand_path($0)

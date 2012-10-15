@@ -44,6 +44,22 @@ Or, more handy way to use as below (since v0.2.1):
       # ...
     end
 
+You can multiple implant as below (since v0.3.0):
+
+    # these args will be combined one file.
+    # so if first arg define "source" and second is not, 
+    # second arg's `gem` is affected by that
+
+    Grill.implant <<-FOO, <<-BAR, :commontools
+      source :rubygems
+      gem "typhoeus"
+      gem "nokogiri"
+    FOO
+      gem "rack"
+    BAR
+
+    # You got typhoeus, nokogiri, rack, and :commontools
+
 # Compatibility of Gemfile
 
 It is completely compatible (you installed version) Bundler's Gemfile so you can use [full spec of it](http://gembundler.com/gemfile.html) for version fixation, `:require`, `:path`, etc.
