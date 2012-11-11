@@ -12,7 +12,7 @@ describe Grill do
   end
 
   it "#home" do
-    Grill.home.should == "#{ENV["GRILL_HOME"]}/.grill"
+    Grill.home.should match %r!#{ENV["GRILL_HOME"]}/.grill!
   end
 
   # cannot use `context` because test will be broken
@@ -69,14 +69,14 @@ describe Grill do
   end
 
   it "separete Gemfile different contants" do
-    Grill.implant(<<-GEM)
-      gem "bundler"
-    GEM
-    Dir.glob("#{Grill.home}/*-*").length.should == 2 # Gemfile and Gemfile.lock
+    gemfile1 = 'gem "bundler"'
+    file1 = Grill.gemfile_path(gemfile1)
 
-    Grill.implant(<<-GEM)
+    gemfile2 = <<-GEM
       gem "dummy", :path => "#{File.expand_path(".././support", __FILE__)}"
     GEM
-    Dir.glob("#{Grill.home}/*-*").length.should == 4
+    file2 = Grill.gemfile_path(gemfile2)
+
+    file1.should_not == file2
   end
 end
