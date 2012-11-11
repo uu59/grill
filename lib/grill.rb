@@ -40,7 +40,7 @@ module Grill
       ENV["BUNDLE_GEMFILE"] = tmp.path
 
       gemdir = File.join(home, ruby)
-      unless system(%Q!bundle check --gemfile "#{gemfile}" --path "#{gemdir}" > #{File::NULL}!)
+      unless system(%Q!bundle check --gemfile "#{gemfile}" --path "#{gemdir}" > #{devnull}!)
         puts "missing gems found. will install them"
         system(%Q!bundle install --gemfile "#{gemfile}" --path "#{gemdir}"!)
         puts "gems are installed."
@@ -53,6 +53,24 @@ module Grill
     private
     def ruby
       "#{defined?(RUBY_ENGINE) ? RUBY_ENGINE : "ruby18"}-#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL}"
+    end
+
+    def devnull
+      # from https://github.com/marcandre/backports/blob/v2.6.5/lib/backports/1.9.3/file.rb
+      return File::NULL if File.const_defined?(:NULL)
+
+      platform = RUBY_PLATFORM
+      platform = RbConfig::CONFIG['host_os'] if platform == 'java'
+      case platform
+      when /mswin|mingw/i
+        'NUL'
+      when /amiga/i
+        'NIL:'
+      when /openvms/i
+        'NL:'
+      else
+        '/dev/null'
+      end
     end
   end
 end
