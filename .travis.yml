@@ -4,5 +4,6 @@ rvm:
   - 1.9.3
   - 2.0.0
 
-script:
-  - bundle install && rspec -c spec/grill_spec.rb
+script: 'ci/spec.rb'
+before_install:
+  - gem install bundler rspec
