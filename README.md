@@ -1,4 +1,4 @@
-# Grill
+# Grill [![Build Status](https://travis-ci.org/uu59/grill.png?branch=master)](https://travis-ci.org/uu59/grill)
 
 <a href="http://en.wikipedia.org/wiki/File:Paul_Wall.jpg"><img src="http://upload.wikimedia.org/wikipedia/commons/9/99/Paul_Wall.jpg" /></a>
 
