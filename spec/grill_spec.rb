@@ -19,18 +19,12 @@ describe Grill do
   # I don't know why but maybe that `context` require Bundler
   it "#implant by String" do
     cleanroom do
-      defined?(Bundler).should be_nil
       defined?(Dummy).should be_nil
-      defined?(DummyGit).should be_nil
 
       Grill.implant(<<-GEM)
-        gem "bundler"
-        gem "dummy", :path => "#{File.expand_path(".././support", __FILE__)}"
-        gem "dummy_git", :git => "file://#{File.expand_path(".././support/dummy_git", __FILE__)}"
+        gem "dummy", :path => "#{File.expand_path(".././support/dummy", __FILE__)}"
       GEM
-      defined?(Bundler).should_not be_nil
       defined?(Dummy).should_not be_nil
-      defined?(DummyGit).should_not be_nil
     end
   end
 
@@ -39,8 +33,8 @@ describe Grill do
       name = :test
       File.open("#{Grill.home}/#{name}", "w") do |f|
         f.puts <<-GEM
-          gem "dummy", :path => "#{File.expand_path(".././support", __FILE__)}"
-          gem "dummy2", :path => "#{File.expand_path(".././support", __FILE__)}"
+          gem "dummy", :path => "#{File.expand_path(".././support/dummy", __FILE__)}"
+          gem "dummy2", :path => "#{File.expand_path(".././support/dummy2", __FILE__)}"
         GEM
       end
       defined?(Dummy).should be_nil
@@ -58,9 +52,9 @@ describe Grill do
       defined?(Dummy2).should be_nil
 
       Grill.implant <<-FOO, <<-BAR
-      gem "dummy", :path => "#{File.expand_path(".././support", __FILE__)}"
+      gem "dummy", :path => "#{File.expand_path(".././support/dummy", __FILE__)}"
       FOO
-      gem "dummy2", :path => "#{File.expand_path(".././support", __FILE__)}"
+      gem "dummy2", :path => "#{File.expand_path(".././support/dummy2", __FILE__)}"
       BAR
 
       defined?(Dummy).should_not be_nil
@@ -69,11 +63,11 @@ describe Grill do
   end
 
   it "separete Gemfile different contants" do
-    gemfile1 = 'gem "bundler"'
+    gemfile1 = 'gem "hogehoge"'
     file1 = Grill.gemfile_path(gemfile1)
 
     gemfile2 = <<-GEM
-      gem "dummy", :path => "#{File.expand_path(".././support", __FILE__)}"
+      gem "dummy", :path => "#{File.expand_path(".././support/dummy", __FILE__)}"
     GEM
     file2 = Grill.gemfile_path(gemfile2)
 

@@ -4,4 +4,4 @@ rvm:
   - 2.0.0
 
 script:
-  - bundle exec rspec -c spec/grill_spec.rb
+  - bundle install && rspec -c spec/grill_spec.rb
