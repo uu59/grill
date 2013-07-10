@@ -61,6 +61,16 @@ describe Grill do
       end
     end
 
+    it "auto completion `source` if lacked" do
+      cleanroom do
+        defined?(Rack).should be_nil
+
+        Grill.implant "gem 'rack', '< 1.0'"
+
+        defined?(Rack).should_not be_nil
+      end
+    end
+
   end
 
 

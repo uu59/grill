@@ -32,6 +32,7 @@ module Grill
         end
         gems << "\n"
       end
+      gems = "source 'https://rubygems.org'\n#{gems}" unless gems["source"]
 
       gemfile = gemfile_path(gems)
       tmp = File.open(gemfile, "w")
