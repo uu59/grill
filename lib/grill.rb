@@ -23,17 +23,7 @@ module Grill
     end
 
     def implant(*args)
-      gems = ""
-      args.each do |arg|
-        if arg.class == Symbol
-          gems << File.read(File.join(home, arg.to_s))
-        else
-          gems << arg
-        end
-        gems << "\n"
-      end
-      gems = "source 'https://rubygems.org'\n#{gems}" unless gems["source"]
-
+      gems = build_gemfile(*args)
       gemfile = gemfile_path(gems)
       tmp = File.open(gemfile, "w")
       tmp.puts gems
@@ -49,6 +39,20 @@ module Grill
 
       require "bundler/setup"
       Bundler.require
+    end
+
+    def build_gemfile(*args)
+      gems = ""
+      args.each do |arg|
+        if arg.class == Symbol
+          gems << File.read(File.join(home, arg.to_s))
+        else
+          gems << arg
+        end
+        gems << "\n"
+      end
+      gems = "source 'https://rubygems.org'\n#{gems}" unless gems[/^\s*source /]
+      gems
     end
 
     private

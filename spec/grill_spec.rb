@@ -15,7 +15,7 @@ describe Grill do
     Grill.home.should match %r!^#{ENV["GRILL_HOME"]}/.grill!
   end
 
-  context "#implant" do
+  describe "#implant" do
     it "by String" do
       cleanroom do
         defined?(Dummy).should be_nil
@@ -24,24 +24,6 @@ describe Grill do
           gem "dummy", :path => "#{File.expand_path(".././support/dummy", __FILE__)}"
         GEM
         defined?(Dummy).should_not be_nil
-      end
-    end
-
-    it "by Symbol" do
-      cleanroom do
-        name = :test
-        File.open("#{Grill.home}/#{name}", "w") do |f|
-          f.puts <<-GEM
-            gem "dummy", :path => "#{File.expand_path(".././support/dummy", __FILE__)}"
-            gem "dummy2", :path => "#{File.expand_path(".././support/dummy2", __FILE__)}"
-          GEM
-        end
-        defined?(Dummy).should be_nil
-        defined?(Dummy2).should be_nil
-
-        Grill.implant name
-        defined?(Dummy).should_not be_nil
-        defined?(Dummy2).should_not be_nil
       end
     end
 
@@ -61,16 +43,31 @@ describe Grill do
       end
     end
 
+  end
+
+  describe "#build_gemfile" do
+
     it "auto completion `source` if lacked" do
-      cleanroom do
-        defined?(Rack).should be_nil
-
-        Grill.implant "gem 'rack', '< 1.0'"
-
-        defined?(Rack).should_not be_nil
-      end
+      gemfile = Grill.build_gemfile "gem 'rack'"
+      gemfile["source"].should_not be_nil
+      gemfile["https://rubygems.org"].should_not be_nil
     end
 
+    it "can receive Symbol" do
+      name = :test
+      gemfile = <<-GEM
+        source "https://rubygems.org"
+        gem "dummy", :path => "#{File.expand_path(".././support/dummy", __FILE__)}"
+        gem "dummy2", :path => "#{File.expand_path(".././support/dummy2", __FILE__)}"
+      GEM
+
+      File.open("#{Grill.home}/#{name}", "w") do |f|
+        f.write gemfile
+      end
+
+      # strip \n for normalize
+      Grill.build_gemfile(name).rstrip.should == gemfile.rstrip
+    end
   end
 
 
