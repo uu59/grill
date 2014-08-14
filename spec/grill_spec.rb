@@ -18,28 +18,24 @@ describe Grill do
   describe "#implant" do
     it "by String" do
       cleanroom do
-        defined?(Dummy).should be_nil
+        self.should_receive(:require).with("dummy")
 
         Grill.implant(<<-GEM)
           gem "dummy", :path => "#{File.expand_path(".././support/dummy", __FILE__)}"
         GEM
-        defined?(Dummy).should_not be_nil
       end
     end
 
     it "multiple" do
       cleanroom do
-        defined?(Dummy).should be_nil
-        defined?(Dummy2).should be_nil
+        self.should_receive(:require).with("dummy")
+        self.should_receive(:require).with("dummy2")
 
         Grill.implant <<-FOO, <<-BAR
         gem "dummy", :path => "#{File.expand_path(".././support/dummy", __FILE__)}"
         FOO
         gem "dummy2", :path => "#{File.expand_path(".././support/dummy2", __FILE__)}"
         BAR
-
-        defined?(Dummy).should_not be_nil
-        defined?(Dummy2).should_not be_nil
       end
     end
 

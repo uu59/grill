@@ -3,7 +3,7 @@
 require "pp"
 require File.expand_path("../../lib/grill", __FILE__)
 require "rubygems"
-require "rspec-expectations"
+require "rspec/expectations"
 require "rspec/matchers/built_in/be"
 
 RSpec.configure do |config|
