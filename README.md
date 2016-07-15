@@ -1,3 +1,16 @@
+# Use bundler/inline instead
+
+```console
+require "bundler/inline"
+
+gemfile(true) do
+  source "https://rubygems.org"
+  gem "rack"
+end
+
+p defined?(Rack) # => "constant"
+```
+
 # Grill
 
 [![Build Status](https://travis-ci.org/uu59/grill.svg?branch=master)](https://travis-ci.org/uu59/grill)
